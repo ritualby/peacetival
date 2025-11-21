@@ -1,15 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
+import TopNav from '../components/TopNav.astro';
+import EventBanner from '../components/EventBanner.astro';
+import IconGrid from '../components/IconGrid.astro';
 ---
 
-<Layout title="Welcome to Astro.">
-	<main id="main">
-		<div class="w-11/12 max-w-6xl mx-auto">
-			<Navbar />
-			<h1 class="text-3xl font-black">Astro Template</h1>
-			<p>Ready for your project.</p>
-			<p class="font-mono">Mono font</p>
+<Layout title="Peacetival 3.0">
+	<main class="min-h-screen bg-yellow-400">
+		<div class="w-full">
+			<TopNav />
+			<EventBanner />
+			<IconGrid />
 		</div>
 	</main>
 </Layout>
