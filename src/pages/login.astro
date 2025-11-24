@@ -349,10 +349,10 @@ import TopNav from '../components/TopNav.astro';
         <span>atau</span>
       </div>
 
-      <a href="https://auth.ejpeace.my.id/login" class="peace-club-btn" target="_blank" rel="noopener noreferrer">
+      <button type="button" class="peace-club-btn" id="peaceClubBtn">
         <span style="font-size: 20px;">✌️</span>
         Sign in with Peace Club
-      </a>
+      </button>
     </div>
 
     
@@ -361,8 +361,10 @@ import TopNav from '../components/TopNav.astro';
   <script>
     // @ts-nocheck
     const API_BASE = 'https://auth.ejpeace.my.id/api';
+    const AUTH_LOGIN_URL = 'https://auth.ejpeace.my.id/login';
     const form = document.getElementById('loginForm');
     const submitBtn = document.getElementById('submitBtn');
+    const peaceClubBtn = document.getElementById('peaceClubBtn');
     const alertContainer = document.getElementById('alertContainer');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -399,17 +401,68 @@ import TopNav from '../components/TopNav.astro';
       return false;
     }
 
-    // Check auth on page load
-    window.addEventListener('load', async () => {
-      await checkAuth();
+    // Peace Club SSO popup flow
+    peaceClubBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      // First check if already logged in
+      if (await checkAuth()) return;
+
+      // Open popup to auth worker's /login endpoint
+      const popup = window.open(AUTH_LOGIN_URL, 'peaceclub_login', 'width=600,height=700,scrollbars=yes,resizable=yes');
+      if (!popup) {
+        showAlert('Popup terblokir. Silakan izinkan popup dan coba lagi.', 'error');
+        return;
+      }
+
+      window._peaceclubPopup = popup;
+
+      // Poll for auth verification every 1 second, timeout after 30 seconds
+      const startTime = Date.now();
+      const pollInterval = setInterval(async () => {
+        // Check if popup was closed by user
+        if (popup.closed) {
+          clearInterval(pollInterval);
+          // Try to verify once more when popup closes
+          await checkAuth();
+          return;
+        }
+
+        // Try to verify auth status
+        if (await checkAuth()) {
+          clearInterval(pollInterval);
+          try { popup.close(); } catch (e) {}
+          return;
+        }
+
+        // Timeout after 30 seconds
+        if (Date.now() - startTime > 30000) {
+          clearInterval(pollInterval);
+          try { popup.close(); } catch (e) {}
+          showAlert('Login timeout. Silakan coba lagi.', 'error');
+        }
+      }, 1000);
+
+      window._peaceclubPollInterval = pollInterval;
     });
 
-    // Listen for postMessage from SSO callback (both popup and direct navigation)
+    // Listen for postMessage from SSO callback
     window.addEventListener('message', async (event) => {
       try {
         const data = event.data || {};
         if (data.sso === 'success') {
-          // SSO completed, verify auth
+          // Clear polling interval if active
+          if (window._peaceclubPollInterval) {
+            clearInterval(window._peaceclubPollInterval);
+            window._peaceclubPollInterval = null;
+          }
+          // Try to close popup
+          try {
+            if (window._peaceclubPopup && !window._peaceclubPopup.closed) {
+              window._peaceclubPopup.close();
+            }
+          } catch (e) {}
+          // Verify auth
           await checkAuth();
         }
       } catch (e) {

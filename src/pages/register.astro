@@ -105,7 +105,7 @@
         <button type="submit" class="btn-submit" id="submitBtn">Registrasi</button>
       </form>
       <div class="divider"><span>atau</span></div>
-      <a href="https://auth.ejpeace.my.id/login" class="peace-club-btn" target="_blank" rel="noopener noreferrer"><span style="font-size:20px;">✌️</span> Sign in with Peace Club</a>
+      <button type="button" class="peace-club-btn" id="peaceClubBtn"><span style="font-size:20px;">✌️</span> Sign in with Peace Club</button>
       <div class="login-link">Sudah punya akun? <a href="/login">Masuk di sini</a></div>
     </div>
   </div>
@@ -191,22 +191,54 @@
       return false;
     }
 
-    // Check auth on page load
-    window.addEventListener('load', async () => {
-      await checkAuth();
-    });
+    peaceClubBtn.addEventListener('click', async () => {
+      // First, check if already logged in
+      if (await checkAuth()) return;
 
-    // Listen for postMessage from SSO callback (both popup and direct navigation)
+      // Open popup to auth worker's /login endpoint
+      const popup = window.open('https://auth.ejpeace.my.id/login', 'peaceclub_login', 'width=600,height=700,scrollbars=yes,resizable=yes');
+      if (!popup) {
+        showAlert('Popup terblokir. Silakan izinkan popup dan coba lagi.', 'error');
+        return;
+      }
+      window._peaceclubPopup = popup;
+
+      // Poll for auth every 1 second, timeout after 30s
+      const start = Date.now();
+      const pollInterval = setInterval(async () => {
+        // stop if popup was blocked or closed
+        if (!popup || popup.closed) {
+          clearInterval(pollInterval);
+          await checkAuth();
+          return;
+        }
+
+        // try verification on parent
+        if (await checkAuth()) {
+          clearInterval(pollInterval);
+          try { popup.close(); } catch (e) {}
+          return;
+        }
+
+        if (Date.now() - start > 30000) {
+          clearInterval(pollInterval);
+          // give one final try then stop
+          await checkAuth();
+        }
+      }, 1000);
+      window._peaceclubPollInterval = pollInterval;
+    });
+    
+    // Listen for SSO completion from popup (/sso/callback will postMessage)
     window.addEventListener('message', async (event) => {
       try {
         const data = event.data || {};
-        if (data.sso === 'success') {
-          // SSO completed, verify auth
+        if (data && data.sso === 'success') {
+          if (window._peaceclubPollInterval) { clearInterval(window._peaceclubPollInterval); window._peaceclubPollInterval = null; }
+          try { if (window._peaceclubPopup && !window._peaceclubPopup.closed) window._peaceclubPopup.close(); } catch (e) {}
           await checkAuth();
         }
-      } catch (e) {
-        console.error('message handler error', e);
-      }
+      } catch (e) { console.error('message handler error', e); }
     });
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
