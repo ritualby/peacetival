@@ -95,7 +95,8 @@
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
   const totalSlides = slides.length;
-  let autoSlideInterval: number;
+  // Use ReturnType<typeof setInterval> for Node vs Browser compatibility during Astro build
+  let autoSlideInterval: ReturnType<typeof setInterval>;
   
   // Touch/Swipe variables
   let touchStartX = 0;
@@ -175,12 +176,12 @@
   // Touch events for swipe
   const sliderContainer = document.querySelector('.slider-container');
   
-  sliderContainer?.addEventListener('touchstart', (e) => {
+  sliderContainer?.addEventListener('touchstart', (e: TouchEvent) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
   });
 
-  sliderContainer?.addEventListener('touchmove', (e) => {
+  sliderContainer?.addEventListener('touchmove', (e: TouchEvent) => {
     touchEndX = e.touches[0].clientX;
     touchEndY = e.touches[0].clientY;
   });
