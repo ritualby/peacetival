@@ -2,116 +2,46 @@
 interface IconItem {
   name: string;
   icon: string;
+  customImage?: string;
 }
 
 const icons: IconItem[] = [
-  { name: "Line Up", icon: "microphone" },
-  { name: "Rundown", icon: "calendar" },
-  { name: "Venue Map", icon: "map" },
-  { name: "Ticket", icon: "ticket" },
-  { name: "Merchandise", icon: "shirt" },
-  { name: "Foods & Drinks", icon: "food" },
-  { name: "EJPeace Radio", icon: "radio" },
-  { name: "Live Streaming", icon: "streaming" },
-  { name: "News", icon: "news" },
+  { name: "Line Up", icon: "microphone", customImage: "https://i.imgur.com/8HHbV1Y.png" },
+  { name: "Rundown", icon: "calendar", customImage: "https://i.imgur.com/8gEbbn2.png" },
+  { name: "Venue Map", icon: "map", customImage: "https://i.imgur.com/GvkBmJQ.png" },
+  { name: "Ticket", icon: "ticket", customImage: "https://i.imgur.com/2c1ajRb.png" },
+  { name: "Merchandise", icon: "shirt", customImage: "https://i.imgur.com/pXYBZB2.png" },
+  { name: "Foods & Drinks", icon: "food", customImage: "https://i.imgur.com/CV5ix2s.png" },
+  { name: "EJPeace Radio", icon: "radio", customImage: "https://i.imgur.com/fdOU4LK.png" },
+  { name: "Live Streaming", icon: "streaming", customImage: "https://i.imgur.com/fdOU4LK.png" },
+  { name: "News", icon: "news", customImage: "https://i.imgur.com/fdOU4LK.png" },
 ];
 ---
 
-<section class="bg-yellow-400 px-4 py-8 md:py-12 lg:py-16">
+<section class="bg-yellow-400 px-4 py-4 md:py-6 lg:py-8">
   <div class="max-w-6xl mx-auto">
     <div class="grid grid-cols-3 gap-4 md:gap-6 lg:gap-8">
       {icons.map((item) => (
         <a 
           href={`#${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-          class="flex flex-col items-center justify-center group hover:scale-105 transition-transform duration-200 cursor-pointer"
+          class="flex flex-col items-center justify-center group hover:scale-110 transition-transform duration-200 cursor-pointer gap-1"
         >
-          <!-- Icon Container -->
-          <div class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 bg-blue-500 rounded-2xl flex items-center justify-center mb-2 md:mb-3 shadow-lg group-hover:shadow-xl transition-shadow relative overflow-hidden">
-            {item.icon === "microphone" && (
-              <!-- Line Up Icon: Hand holding microphone with notes -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <!-- Hand -->
-                <path d="M8 10c-1 0-2 1-2 2v2c0 1 1 2 2 2h1l1 3h4l1-3h1c1 0 2-1 2-2v-2c0-1-1-2-2-2H8z"/>
-                <!-- Microphone -->
-                <path d="M11 4c-1 0-2 1-2 2v4c0 1 1 2 2 2s2-1 2-2V6c0-1-1-2-2-2z"/>
-                <path d="M11 16v2M9 20h4"/>
-                <!-- Musical notes -->
-                <circle cx="18" cy="6" r="1.5" fill="white"/>
-                <path d="M18 7v3" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="6" cy="8" r="1" fill="white"/>
-                <path d="M6 9v2" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <!-- Stars -->
-                <path d="M16 3l0.5 1 1 0.5-1 0.5-0.5 1-0.5-1-1-0.5 1-0.5z" fill="white" opacity="0.8"/>
-              </svg>
-            )}
-            {item.icon === "calendar" && (
-              <!-- Rundown Icon: Calendar with star -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <rect x="4" y="5" width="16" height="16" rx="2" fill="white"/>
-                <path d="M8 2v4M16 2v4M4 9h16" stroke="white" stroke-width="2" fill="none"/>
-                <circle cx="9" cy="13" r="1" fill="white"/>
-                <circle cx="15" cy="13" r="1" fill="white"/>
-                <circle cx="9" cy="17" r="1" fill="white"/>
-                <circle cx="15" cy="17" r="1" fill="white"/>
-                <path d="M18 4l-1 2-2 1 2 1 1 2 1-2 2-1-2-1z" fill="white" opacity="0.9"/>
-              </svg>
-            )}
-            {item.icon === "map" && (
-              <!-- Venue Map Icon: Signpost with arrows -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <!-- Post -->
-                <rect x="11" y="4" width="2" height="16" fill="white"/>
-                <!-- Left Arrow -->
-                <path d="M4 12l7-7v4h9v6h-9v4z" fill="white"/>
-                <circle cx="3" cy="12" r="1.5" fill="white"/>
-                <!-- Right Arrow -->
-                <path d="M20 12l-7-7v4H4v6h9v4z" fill="white"/>
-                <circle cx="21" cy="12" r="1.5" fill="white"/>
-                <!-- Notes -->
-                <circle cx="6" cy="9" r="0.8" fill="white" opacity="0.7"/>
-                <circle cx="18" cy="15" r="0.8" fill="white" opacity="0.7"/>
-              </svg>
-            )}
-            {item.icon === "ticket" && (
-              <!-- Ticket Icon: Ticket stub with star -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <rect x="4" y="6" width="16" height="12" rx="2" fill="white"/>
-                <path d="M12 8v8" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.3"/>
-                <circle cx="12" cy="12" r="1.5" fill="white"/>
-                <path d="M16 4l-1 2-2 1 2 1 1 2 1-2 2-1-2-1z" fill="white" opacity="0.9"/>
-                <!-- Notes -->
-                <circle cx="7" cy="10" r="0.8" fill="white" opacity="0.7"/>
-                <circle cx="17" cy="14" r="0.8" fill="white" opacity="0.7"/>
-              </svg>
-            )}
-            {item.icon === "shirt" && (
-              <!-- Merchandise Icon: T-shirt with S/star design -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <!-- T-shirt shape -->
-                <path d="M8 4h8l-2 2h-4l-2-2z" fill="white"/>
-                <path d="M6 6h12v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6z" fill="white"/>
-                <!-- S/Star design on front -->
-                <path d="M12 10c-1 0-2 1-2 2s1 2 2 2c1 0 2 1 2 2s-1 2-2 2" stroke="white" stroke-width="1.5" fill="none"/>
-                <path d="M11 8l1-1 1 1M13 16l-1 1-1-1" stroke="white" stroke-width="1.5" fill="none"/>
-              </svg>
-            )}
-            {item.icon === "food" && (
-              <!-- Foods & Drinks Icon: Bowl with steam and bottle -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <!-- Bowl -->
-                <ellipse cx="10" cy="18" rx="6" ry="2" fill="white"/>
-                <path d="M4 16c0-3 2-5 5-5h2c3 0 5 2 5 5" stroke="white" stroke-width="2" fill="none"/>
-                <!-- Steam -->
-                <path d="M7 12c1-2 3-3 5-2M8 9c1-1 2-1 3 0M9 6c1-1 2-1 3 0" stroke="white" stroke-width="1.5" fill="none" opacity="0.8"/>
-                <!-- Bottle -->
-                <rect x="16" y="4" width="3" height="10" rx="1" fill="white"/>
-                <rect x="17" y="2" width="1" height="2" fill="white"/>
-                <path d="M17 8h1" stroke="white" stroke-width="1.5"/>
-              </svg>
-            )}
-            {item.icon === "radio" && (
+          <!-- Icon Only -->
+          <div class="flex items-center justify-center">
+            {item.customImage ? (
+              <!-- Custom Image Icon -->
+              <img 
+                src={item.customImage} 
+                alt={item.name}
+                class={`object-contain drop-shadow-lg group-hover:drop-shadow-xl transition-all ${
+                  item.icon === "radio" || item.icon === "streaming" || item.icon === "news"
+                    ? "w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+                    : "w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28"
+                }`}
+              />
+            ) : item.icon === "radio" ? (
               <!-- Synchronize Radio Icon: Vintage radio with notes -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 drop-shadow-lg group-hover:drop-shadow-xl transition-all" fill="currentColor" viewBox="0 0 24 24">
                 <!-- Radio body -->
                 <rect x="4" y="8" width="16" height="10" rx="2" fill="white"/>
                 <rect x="2" y="16" width="20" height="2" rx="1" fill="white"/>
@@ -129,10 +59,9 @@ const icons: IconItem[] = [
                 <circle cx="5" cy="6" r="0.8" fill="white"/>
                 <path d="M5 6.8v2" stroke="white" stroke-width="1" fill="none"/>
               </svg>
-            )}
-            {item.icon === "streaming" && (
+            ) : item.icon === "streaming" ? (
               <!-- Live Streaming Icon: TV screen with play button -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 drop-shadow-lg group-hover:drop-shadow-xl transition-all" fill="currentColor" viewBox="0 0 24 24">
                 <!-- TV screen -->
                 <rect x="3" y="4" width="18" height="12" rx="2" fill="white"/>
                 <rect x="5" y="6" width="14" height="8" rx="1" fill="white" opacity="0.3"/>
@@ -147,10 +76,9 @@ const icons: IconItem[] = [
                 <circle cx="6" cy="8" r="0.6" fill="white"/>
                 <path d="M6 8.6v1.5" stroke="white" stroke-width="1" fill="none"/>
               </svg>
-            )}
-            {item.icon === "news" && (
+            ) : item.icon === "news" ? (
               <!-- News Icon: Globe with NEWS banner -->
-              <svg class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 drop-shadow-lg group-hover:drop-shadow-xl transition-all" fill="currentColor" viewBox="0 0 24 24">
                 <!-- Globe -->
                 <circle cx="12" cy="12" r="9" fill="white" opacity="0.9"/>
                 <!-- Longitude lines -->
@@ -165,13 +93,11 @@ const icons: IconItem[] = [
                 <circle cx="6" cy="18" r="0.6" fill="white"/>
                 <path d="M6 18.6v1.5" stroke="white" stroke-width="1" fill="none"/>
               </svg>
-            )}
+            ) : null}
           </div>
-          
-          <!-- Label -->
-          <span class="text-blue-600 text-xs md:text-sm lg:text-base font-semibold text-center group-hover:text-blue-700 transition-colors">
+          <p class="text-black text-center text-sm md:text-base lg:text-lg font-bold" style="font-family: 'Archivo', sans-serif; font-weight: 700; letter-spacing: -0.3px;">
             {item.name}
-          </span>
+          </p>
         </a>
       ))}
     </div>

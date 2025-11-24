@@ -1,47 +1,172 @@
 ---
 ---
 
-<nav class="flex items-center justify-between w-full px-4 py-4 md:px-6 lg:px-8">
-  <!-- Hamburger Menu -->
-  <button id="menu-toggle" class="md:hidden text-gray-800 hover:text-gray-600 transition-colors">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  </button>
-  
-  <!-- Logo/Title untuk desktop -->
-  <div class="hidden md:block">
-    <h1 class="text-xl font-bold text-gray-800">Peacetival</h1>
-  </div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700&display=swap');
+</style>
+
+<nav class="flex items-center justify-between w-full px-4 py-2 md:px-6 lg:px-8">
+  <!-- Logo -->
+  <a href="/" class="flex items-center">
+    <img 
+      src="https://i.imgur.com/3DVqzxw.png" 
+      alt="Peacetival Logo" 
+      class="h-6 md:h-8 w-auto"
+    />
+  </a>
 
   <!-- Right Side Icons -->
-  <div class="flex items-center gap-4 ml-auto md:ml-0">
+  <div class="flex items-center gap-4">
     <!-- Shopping Cart -->
     <button class="text-gray-800 hover:text-gray-600 transition-colors relative">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
       </svg>
       <!-- Badge for cart items -->
       <span class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
     </button>
     
-    <!-- User Profile -->
-    <button class="text-gray-800 hover:text-gray-600 transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <!-- User Profile / Menu Toggle -->
+    <button id="userMenuToggle" class="text-gray-800 hover:text-gray-600 transition-colors">
+      <!-- User Icon (shown when not logged in) -->
+      <svg id="userIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+      <!-- Hamburger Icon (shown when logged in) -->
+      <svg id="hamburgerIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
   </div>
 </nav>
 
-<script>
-  // Mobile menu toggle functionality
-  const menuToggle = document.getElementById('menu-toggle');
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      // Add mobile menu functionality here if needed
-      console.log('Menu toggle clicked');
-    });
-  }
-</script>
+<!-- User Sidebar Menu -->
+<div id="userSidebar" class="fixed inset-0 z-40 hidden">
+  <!-- Backdrop -->
+  <div id="sidebarBackdrop" class="absolute inset-0 bg-black/50"></div>
+  
+  <!-- Sidebar Panel -->
+  <div class="absolute right-0 top-0 bottom-0 w-full max-w-xs bg-[#0f1e3a] shadow-lg z-50 transform transition-transform duration-300">
+    <!-- Header -->
+    <div class="bg-[#fbbf24] p-6 text-black" style="font-family: 'Archivo', sans-serif;">
+      <button id="closeSidebar" class="absolute top-4 right-4 text-black hover:text-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div id="userInfo">
+        <h2 id="userName" class="text-lg font-bold text-black" style="letter-spacing: 0.3px;">User Name</h2>
+        <p id="userEmail" class="text-sm text-gray-800">user@email.com</p>
+      </div>
+    </div>
+    
+    <!-- Menu Items -->
+    <div class="p-4 space-y-2" style="font-family: 'Archivo', sans-serif;">
+      <a href="/tickets" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-[#1a2f5a] rounded-lg transition-colors font-bold" style="letter-spacing: 0.3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h6a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V5z" />
+        </svg>
+        <span>My Tickets</span>
+      </a>
+      
+      <a href="/orders" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-[#1a2f5a] rounded-lg transition-colors font-bold" style="letter-spacing: 0.3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <span>My Orders</span>
+      </a>
+      
+      <a href="/settings" class="flex items-center gap-3 px-4 py-3 text-white hover:bg-[#1a2f5a] rounded-lg transition-colors font-bold" style="letter-spacing: 0.3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Settings</span>
+      </a>
+      
+      <button id="logoutBtn" class="w-full flex items-center gap-3 px-4 py-3 text-[#fbbf24] hover:bg-[#1a2f5a] rounded-lg transition-colors font-bold" style="letter-spacing: 0.3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+</div>
 
+<script>
+  // @ts-nocheck
+  const userMenuToggle = document.getElementById('userMenuToggle');
+  const userSidebar = document.getElementById('userSidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userName = document.getElementById('userName');
+  const userEmail = document.getElementById('userEmail');
+  const userInfo = document.getElementById('userInfo');
+  const userIcon = document.getElementById('userIcon');
+  const hamburgerIcon = document.getElementById('hamburgerIcon');
+
+  // Check if user is logged in
+  function checkUserAuth() {
+    try {
+      const user = sessionStorage.getItem('user');
+      if (user) {
+        const userData = JSON.parse(user);
+        userName.textContent = userData.name || 'User';
+        userEmail.textContent = userData.email || '';
+        userInfo.style.display = 'block';
+        // Switch to hamburger icon
+        userIcon.classList.add('hidden');
+        hamburgerIcon.classList.remove('hidden');
+        return true;
+      } else {
+        userInfo.style.display = 'none';
+        // Keep user icon visible
+        userIcon.classList.remove('hidden');
+        hamburgerIcon.classList.add('hidden');
+        userMenuToggle.onclick = () => window.location.href = '/login';
+      }
+    } catch (e) {
+      console.error('Auth check error:', e);
+    }
+    return false;
+  }
+
+  // Toggle sidebar
+  userMenuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (checkUserAuth()) {
+      userSidebar.classList.remove('hidden');
+    }
+  });
+
+  closeSidebar.addEventListener('click', () => {
+    userSidebar.classList.add('hidden');
+  });
+
+  sidebarBackdrop.addEventListener('click', () => {
+    userSidebar.classList.add('hidden');
+  });
+
+  // Logout handler
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      const token = sessionStorage.getItem('auth_token');
+      if (token) {
+        await fetch('https://auth.ejpeace.my.id/api/logout', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          credentials: 'include'
+        });
+      }
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
+    sessionStorage.clear();
+    window.location.href = '/';
+  });
+
+  // Check auth on page load
+  checkUserAuth();
+</script>
