@@ -105,14 +105,7 @@
         <button type="submit" class="btn-submit" id="submitBtn">Registrasi</button>
       </form>
       <div class="divider"><span>atau</span></div>
-      {/* SSO Button - hanya tampil di production */}
-      {typeof window !== 'undefined' && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1') ? (
-        <a href="https://auth.ejpeace.my.id/login" class="peace-club-btn" target="_blank" rel="noopener noreferrer"><span style="font-size:20px;">✌️</span> Sign in with Peace Club</a>
-      ) : (
-        <div style="text-align: center; padding: 12px; color: #d1d5db; font-size: 12px; font-style: italic;">
-          SSO login tidak tersedia di localhost. Gunakan email/password untuk testing.
-        </div>
-      )}
+      <a href="https://auth.ejpeace.my.id/login" class="peace-club-btn" target="_blank" rel="noopener noreferrer"><span style="font-size:20px;">✌️</span> Sign in with Peace Club</a>
       <div class="login-link">Sudah punya akun? <a href="/login">Masuk di sini</a></div>
     </div>
   </div>
